@@ -26,7 +26,7 @@
   <!-- vertag<:>end -->
   <ItemGroup>
     <Content Include="azuredeploy.json" />
-    <Content Include="azuredeploy.parameters.json" />
+    <None Include="azuredeploy.parameters.json" />
     <None Include="data\adVmTemplate.json" />
     <None Include="data\CreateADPDC.ps1.zip" />
     <None Include="Deployment.targets">
