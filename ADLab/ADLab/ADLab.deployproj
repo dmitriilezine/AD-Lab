@@ -30,13 +30,14 @@
     <None Include="data\AD-Data.psd1" />
     <None Include="data\adVmTemplate.json" />
     <None Include="data\ataVmTemplate.json" />
+    <None Include="data\c2VmTemplate.json" />
     <None Include="data\CreateADPDC.zip" />
+    <None Include="data\DomainJoin.zip" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
     <None Include="data\deployPrimaryAD.json" />
-    <None Include="data\DomainJoinDSC.zip" />
     <None Include="nic.json" />
     <None Include="readme.md" />
     <None Include="data\vnet-with-dns-server.json" />

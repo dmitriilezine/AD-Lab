@@ -416,8 +416,60 @@
           }
         }
       }
+    },
+    {
+      "name": "[variables('c2VmDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('c2TemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "storageAccount": {
+            "value": "[variables('c2StorageName')]"
+          },
+          "subnetResourceID": {
+            "value": "[variables('staticSubnetID')]"
+          },
+          "storageAccountType": {
+            "value": "[variables('storageAccountType')]"
+          },
+          "windowsImageSKU": {
+            "value": "[variables('c2OSVersion')]"
+          },
+          "vmName": {
+            "value": "[variables('c2VMName')]"
+          },
+          "vmSize": {
+            "value": "[variables('adVMSize')]"
+          },
+          "adDNicName": {
+            "value": "[variables('c2NICName')]"
+          },
+          "primaryAdIpAddress": {
+            "value": "[variables('primaryC2IpAddress')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          }
+        }
+      }
     }
-
   ],
   "outputs": {}
 }
