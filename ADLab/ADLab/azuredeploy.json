@@ -30,36 +30,96 @@
       },
       "defaultValue": "127.0.0.1"
     },
-    "imageSKU": {
+    "DomainControllerImageSKU": {
       "type": "string",
       "allowedValues": [
         "2012-R2-Datacenter",
         "2016-Datacenter"
       ],
-        "metadata":
-        {
-          "description": "Choose OS type"
-        },
-        "defaultValue": "2016-Datacenter"
+      "metadata": {
+        "description": "Choose OS type for Domain Controller"
+      },
+      "defaultValue": "2016-Datacenter"
+    },
+    "C2VMImageSKU": {
+      "type": "string",
+      "allowedValues": [
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
+      ],
+      "metadata": {
+        "description": "Choose OS type for C2 Server"
+      },
+      "defaultValue": "2016-Datacenter"
+    },
+    "ATAVMImageSKU": {
+      "type": "string",
+      "allowedValues": [
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
+      ],
+      "metadata": {
+        "description": "Choose OS type for ATA Server"
+      },
+      "defaultValue": "2016-Datacenter"
+    },
+    "VM1VMImageSKU": {
+      "type": "string",
+      "allowedValues": [
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
+      ],
+      "metadata": {
+        "description": "Choose OS type for VM1 Server"
+      },
+      "defaultValue": "2016-Datacenter"
+    },
+    "VM2VMImageSKU": {
+      "type": "string",
+      "allowedValues": [
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
+      ],
+      "metadata": {
+        "description": "Choose OS type for VM2 Server"
+      },
+      "defaultValue": "2016-Datacenter"
     }
   },
   "variables": {
     "assetLocation": "https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab",
     "adVMSize": "Standard_A2",
-    "adOSVersion": "[parameters('imageSKU')]",
+    "adOSVersion": "[parameters('DomainControllerImageSKU')]",
+    "ataOSVersion": "[parameters('ATAVMImageSKU')]",
+    "c2OSVersion": "[parameters('C2VMImageSKU')]",
+    "vm1OSVersion": "[parameters('VM1VMImageSKU')]",
+    "vm2OSVersion": "[parameters('VM2VMImageSKU')]",
     "vmNetworkSubnet": "10.0.0.0/24",
     "virtualNetworkAddressRange": "10.0.0.0/16",
     "primaryAdIpAddress": "10.0.0.4",
+    "primaryATAIpAddress": "10.0.0.5",
+    "primaryC2IpAddress": "10.0.0.6",
+    "primaryVM1IpAddress": "10.0.0.7",
+    "primaryVM2IpAddress": "10.0.0.8",
     "storageAccountType": "Standard_LRS",
     "adTemplateURLCloud": "[concat(variables('assetLocation'),'/data/adVmTemplate.json')]",
-    "adTemplateURL": "/adVmTemplate.json",
+    "ataTemplateURL": "[concat(variables('assetLocation'),'/data/ataVmTemplate.json')]",
+    "c2TemplateURL": "[concat(variables('assetLocation'),'/data/c2VmTemplate.json')]",
+    "vm1TemplateURL": "[concat(variables('assetLocation'),'/data/vm1VmTemplate.json')]",
+    "vm2TemplateURL": "[concat(variables('assetLocation'),'/data/vm2VmTemplate.json')]",
     "adStorageNameOLD": "[tolower(concat('adsa',resourceGroup().name))]",
-    "adStorageName": "[tolower(concat('crl', uniqueString(resourceGroup().id)))]",
-    "adStorageName1": "[tolower(concat('adsa1h2n3j4i5'))]",
+    "adStorageName": "[tolower(concat('dc1', uniqueString(resourceGroup().id)))]",
+    "ataStorageName": "[tolower(concat('ata', uniqueString(resourceGroup().id)))]",
+    "c2StorageName": "[tolower(concat('c2', uniqueString(resourceGroup().id)))]",
+    "vmStorageName": "[tolower(concat('vm', uniqueString(resourceGroup().id)))]",
     "dnsPrefix": "[tolower(concat(resourceGroup().name,'dc'))]",
     "adVmDeployment": "CreateADVMs",
     "adVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('adVmDeployment'))]",
     "adPDCVMName": "[substring(concat('DC1',resourceGroup().Name),0,5)]",
+    "ataVMName": "[substring(concat('ATA',resourceGroup().Name),0,5)]",
+    "c2VMName": "[substring(concat('C2',resourceGroup().Name),0,5)]",
+    "vm1VMName": "[substring(concat('VM1',resourceGroup().Name),0,5)]",
+    "vm2VMName": "[substring(concat('VM2',resourceGroup().Name),0,5)]",
     "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
@@ -77,10 +137,22 @@
     "nsgName": "[concat('ADNsg',resourceGroup().name)]",
     "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('nsgName'))]",
     "adNICName": "[concat('ADNic',resourceGroup().name)]",
+    "ataNICName": "[concat('ATANic',resourceGroup().name)]",
+    "c2NICName": "[concat('C2Nic',resourceGroup().name)]",
+    "vm1NICName": "[concat('VM1Nic',resourceGroup().name)]",
+    "vm2NICName": "[concat('VM2Nic',resourceGroup().name)]",
     "staticSubnetName": "[concat('ADStaticSubnet',resourceGroup().name)]",
     "virtualNetworkName": "[concat('ADVNET',resourceGroup().name)]",
     "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
     "staticSubnetID": "[concat(variables('vnetID'),'/subnets/',variables('staticSubnetName'))]",
+    "ataVmDeployment": "CreateATAVM",
+    "ataVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('ataVmDeployment'))]",
+    "c2VmDeployment": "CreateC2VM",
+    "c2VmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('c2VmDeployment'))]",
+    "vm1VmDeployment": "CreateVM1VM",
+    "vm1VmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('vm1VmDeployment'))]",
+    "vm2VmDeployment": "CreateVM2VM",
+    "vm2VmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('vm2VmDeployment'))]",
     "subnets": [
       {
         "name": "[variables('staticSubnetName')]",
@@ -297,7 +369,58 @@
           }
         }
       }
+    },
+    {
+      "name": "[variables('ataVmDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('ataTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "storageAccount": {
+            "value": "[variables('ataStorageName')]"
+          },
+          "subnetResourceID": {
+            "value": "[variables('staticSubnetID')]"
+          },
+          "storageAccountType": {
+            "value": "[variables('storageAccountType')]"
+          },
+          "windowsImageSKU": {
+            "value": "[variables('ataOSVersion')]"
+          },
+          "vmName": {
+            "value": "[variables('ataVMName')]"
+          },
+          "vmSize": {
+            "value": "[variables('adVMSize')]"
+          },
+          "adDNicName": {
+            "value": "[variables('ataNICName')]"
+          },
+          "primaryAdIpAddress": {
+            "value": "[variables('primaryATAIpAddress')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
+          }
+        }
+      }
     }
+
   ],
   "outputs": {}
 }

@@ -29,6 +29,7 @@
     <None Include="azuredeploy.parameters.json" />
     <None Include="data\AD-Data.psd1" />
     <None Include="data\adVmTemplate.json" />
+    <None Include="data\ataVmTemplate.json" />
     <None Include="data\CreateADPDC.zip" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
