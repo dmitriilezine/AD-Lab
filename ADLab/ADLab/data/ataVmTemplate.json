@@ -102,12 +102,6 @@
       "metadata": {
         "description": "PrimaryIPAddress if AD VM"
       }
-    },
-    "assetLocation": {
-      "type": "string",
-      "metadata": {
-        "description": "The location of resources that the script is dependent on such as linked templates and DSC modules"
-      }
     }
   },
   "variables": {

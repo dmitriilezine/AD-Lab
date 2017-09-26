@@ -413,9 +413,6 @@
           },
           "primaryAdIpAddress": {
             "value": "[variables('primaryATAIpAddress')]"
-          },
-          "assetLocation": {
-            "value": "[variables('assetLocation')]"
           }
         }
       }
