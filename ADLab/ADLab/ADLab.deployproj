@@ -33,6 +33,8 @@
     <None Include="data\c2VmTemplate.json" />
     <None Include="data\CreateADPDC.zip" />
     <None Include="data\DomainJoin.zip" />
+    <None Include="data\vm1VmTemplate.json" />
+    <None Include="data\vm2VmTemplate.json" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>

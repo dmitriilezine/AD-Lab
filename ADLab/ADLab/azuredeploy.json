@@ -111,7 +111,8 @@
     "adStorageName": "[tolower(concat('dc1', uniqueString(resourceGroup().id)))]",
     "ataStorageName": "[tolower(concat('ata', uniqueString(resourceGroup().id)))]",
     "c2StorageName": "[tolower(concat('c2', uniqueString(resourceGroup().id)))]",
-    "vmStorageName": "[tolower(concat('vm', uniqueString(resourceGroup().id)))]",
+    "vm1StorageName": "[tolower(concat('vm1', uniqueString(resourceGroup().id)))]",
+    "vm2StorageName": "[tolower(concat('vm2', uniqueString(resourceGroup().id)))]",
     "dnsPrefix": "[tolower(concat(resourceGroup().name,'dc'))]",
     "adVmDeployment": "CreateADVMs",
     "adVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('adVmDeployment'))]",
@@ -460,6 +461,112 @@
           },
           "primaryAdIpAddress": {
             "value": "[variables('primaryC2IpAddress')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('vm1VmDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vm1TemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "storageAccount": {
+            "value": "[variables('vm1StorageName')]"
+          },
+          "subnetResourceID": {
+            "value": "[variables('staticSubnetID')]"
+          },
+          "storageAccountType": {
+            "value": "[variables('storageAccountType')]"
+          },
+          "windowsImageSKU": {
+            "value": "[variables('vm1OSVersion')]"
+          },
+          "vmName": {
+            "value": "[variables('vm1VMName')]"
+          },
+          "vmSize": {
+            "value": "[variables('adVMSize')]"
+          },
+          "adDNicName": {
+            "value": "[variables('vm1NICName')]"
+          },
+          "primaryAdIpAddress": {
+            "value": "[variables('primaryVM1IpAddress')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('vm2VmDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vm2TemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "storageAccount": {
+            "value": "[variables('vm2StorageName')]"
+          },
+          "subnetResourceID": {
+            "value": "[variables('staticSubnetID')]"
+          },
+          "storageAccountType": {
+            "value": "[variables('storageAccountType')]"
+          },
+          "windowsImageSKU": {
+            "value": "[variables('vm2OSVersion')]"
+          },
+          "vmName": {
+            "value": "[variables('vm2VMName')]"
+          },
+          "vmSize": {
+            "value": "[variables('adVMSize')]"
+          },
+          "adDNicName": {
+            "value": "[variables('vm2NICName')]"
+          },
+          "primaryAdIpAddress": {
+            "value": "[variables('primaryVM2IpAddress')]"
           },
           "assetLocation": {
             "value": "[variables('assetLocation')]"
