@@ -33,7 +33,6 @@
   },
   "variables": {
     "assetLocationCloud": "https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab",
-    "assetLocation": "C:\\Users\\dmitriil\\Documents\\Visual Studio 2017\\Projects\\CR Lab in Azure\\CR Lab in Azure",
     "adVMSize": "Standard_A2",
     "adOSVersion": "2016-Datacenter",
     "vmNetworkSubnet": "10.0.0.0/24",
