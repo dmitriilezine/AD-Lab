@@ -27,10 +27,16 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <Content Include="azuredeploy.parameters.json" />
+    <None Include="adVmTemplate.json" />
+    <None Include="CreateADPDC.ps1.zip" />
     <None Include="Deployment.targets">
       <Visible>False</Visible>
     </None>
     <Content Include="Deploy-AzureResourceGroup.ps1" />
+    <None Include="deployPrimaryAD.json" />
+    <None Include="DomainJoinDSC.zip" />
+    <None Include="nic.json" />
+    <None Include="vnet-with-dns-server.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
 </Project>

@@ -1,8 +1,291 @@
 {
   "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
-  "parameters": {},
-  "variables": {},
-  "resources": [],
+  "parameters": {
+    "domainName": {
+      "type": "string",
+      "metadata": {
+        "description": "The domain name needs to be consisting of one or more labels separated by . E.g. contoso.com"
+      },
+      "defaultValue": "contoso.com"
+    },
+    "adminUsername": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Administrator of the new VMs and Domain"
+      },
+      "defaultValue": "labadmin"
+    },
+    "adminPassword": {
+      "type": "securestring",
+      "metadata": {
+        "description": "The password for the Administrator account of the new VMs and Domain"
+      },
+      "defaultValue": "[concat('Subscription#',subscription().subscriptionId)]"
+    },
+    "sourceClientIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Internet IP of the computer that will manage this lab"
+      },
+      "defaultValue": "127.0.0.1"
+    }
+  },
+  "variables": {
+    "assetLocationCloud": "https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab",
+    "assetLocation": "C:\\Users\\dmitriil\\Documents\\Visual Studio 2017\\Projects\\CR Lab in Azure\\CR Lab in Azure",
+    "adVMSize": "Standard_A2",
+    "adOSVersion": "2016-Datacenter",
+    "vmNetworkSubnet": "10.0.0.0/24",
+    "virtualNetworkAddressRange": "10.0.0.0/16",
+    "primaryAdIpAddress": "10.0.0.4",
+    "storageAccountType": "Standard_LRS",
+    "adTemplateURLCloud": "[concat(variables('assetLocationCloud'),'/adVmTemplate.json')]",
+    "adTemplateURL": "/adVmTemplate.json",
+    "adStorageNameOLD": "[tolower(concat('adsa',resourceGroup().name))]",
+    "adStorageName": "[tolower(concat('adsa1h2n3j4i5l'))]",
+    "dnsPrefix": "[tolower(concat(resourceGroup().name,'dc'))]",
+    "adVmDeployment": "CreateADVMs",
+    "adVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('adVmDeployment'))]",
+    "adPDCVMName": "[substring(concat('ADVM',resourceGroup().Name),0,5)]",
+    "deployPrimaryAdTemplateURL": "[concat(variables('assetLocationCloud'),'/deployPrimaryAD.json')]",
+    "deployPrimaryAd": "ConfigureAD",
+    "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
+    "updateVNetDNS1": "UpdateVNetDNS",
+    "vnetwithDNSTemplateURL": "[concat(variables('assetLocationCloud'),'/vnet-with-dns-server.json')]",
+    "publicLBName": "[concat('ADPLB',resourceGroup().name)]",
+    "publicIPAddressName": "[concat('ADlbPublicIP',resourceGroup().name)]",
+    "lbFE": "[concat('ADLBFE',resourceGroup().name)]",
+    "rpdNAT": "[concat('ADRDPNAT',resourceGroup().name)]",
+    "publicIPAddressID": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]",
+    "publiclbID": "[resourceId('Microsoft.Network/loadBalancers',variables('publicLBName'))]",
+    "publiclbFEConfigID": "[concat(variables('publiclbID'),'/frontendIPConfigurations/',variables('lbFE'))]",
+    "rdpPort": 3389,
+    "adRDPNATRuleID": "[concat(variables('publiclbID'),'/inboundNatRules/',variables('rpdNAT'))]",
+    "nsgName": "[concat('ADNsg',resourceGroup().name)]",
+    "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('nsgName'))]",
+    "adNICName": "[concat('ADNic',resourceGroup().name)]",
+    "staticSubnetName": "[concat('ADStaticSubnet',resourceGroup().name)]",
+    "virtualNetworkName": "[concat('ADVNET',resourceGroup().name)]",
+    "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]",
+    "staticSubnetID": "[concat(variables('vnetID'),'/subnets/',variables('staticSubnetName'))]",
+    "subnets": [
+      {
+        "name": "[variables('staticSubnetName')]",
+        "properties": {
+          "addressPrefix": "[variables('vmNetworkSubnet')]",
+          "networkSecurityGroup": {
+            "id": "[variables('nsgID')]"
+          }
+        }
+      }
+    ]
+  },
+  "resources": [
+    {
+      "name": "[variables('nsgName')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "apiVersion": "2015-06-15",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "rule1",
+            "properties": {
+              "protocol": "*",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "[parameters('sourceClientIP')]",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 101,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('virtualNetworkName')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[variables('nsgID')]"
+      ],
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('virtualNetworkAddressRange')]"
+          ],
+          "networkSecurityGroup": {
+            "id": "[variables('nsgID')]"
+          }
+        },
+        "subnets": "[variables('subnets')]"
+      }
+    },
+    {
+      "name": "[variables('publicIPAddressName')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[variables('vnetID')]"
+      ],
+      "properties": {
+        "publicIPAllocationMethod": "Dynamic",
+        "dnsSettings": {
+          "domainNameLabel": "[variables('dnsPrefix')]"
+        }
+      }
+    },
+    {
+      "name": "[variables('publiclbName')]",
+      "location": "[resourceGroup().location]",
+      "type": "Microsoft.Network/loadBalancers",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[variables('publicIPAddressID')]"
+      ],
+      "properties": {
+        "frontendIPConfigurations": [
+          {
+            "name": "[variables('lbFE')]",
+            "properties": {
+              "publicIPAddress": {
+                "id": "[variables('publicIPAddressID')]"
+              }
+            }
+          }
+        ],
+        "inboundNatRules": [
+          {
+            "name": "[variables('rpdNAT')]",
+            "properties": {
+              "frontendIPConfiguration": {
+                "id": "[variables('publiclbFEConfigID')]"
+              },
+              "protocol": "tcp",
+              "frontendPort": "[variables('rdpPort')]",
+              "backendPort": 3389,
+              "enableFloatingIP": false
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('adVmDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('publiclbID')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('adTemplateURLCloud')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "adRDPNATRuleID": {
+            "value": "[variables('adRDPNATRuleID')]"
+          },
+          "storageAccount": {
+            "value": "[variables('adStorageName')]"
+          },
+          "subnetResourceID": {
+            "value": "[variables('staticSubnetID')]"
+          },
+          "storageAccountType": {
+            "value": "[variables('storageAccountType')]"
+          },
+          "windowsImageSKU": {
+            "value": "[variables('adOSVersion')]"
+          },
+          "vmName": {
+            "value": "[variables('adPDCVMName')]"
+          },
+          "vmSize": {
+            "value": "[variables('adVMSize')]"
+          },
+          "adDNicName": {
+            "value": "[variables('adNICName')]"
+          },
+          "primaryAdIpAddress": {
+            "value": "[variables('primaryAdIpAddress')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('deployPrimaryAd')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('adVmDeploymentId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployPrimaryAdTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "primaryADName": {
+            "value": "[variables('adPDCVMName')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocationCloud')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('updateVNetDNS1')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vnetwithDNSTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
+          },
+          "virtualNetworkAddressRange": {
+            "value": "[variables('virtualNetworkAddressRange')]"
+          },
+          "subnets": {
+            "value": "[variables('subnets')]"
+          },
+          "dnsServerAddress": {
+            "value": [ "[variables('primaryAdIpAddress')]" ]
+          }
+        }
+      }
+    }
+  ],
   "outputs": {}
 }
