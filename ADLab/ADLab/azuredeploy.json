@@ -29,12 +29,24 @@
         "description": "Internet IP of the computer that will RDP into this lab. Change this to * to allow all Internet devices to brute force your lab or find out external IP or subnet for your device to lock down access to your lab from the Internet. Choice is yours."
       },
       "defaultValue": "127.0.0.1"
+    },
+    "imageSKU": {
+      "type": "string",
+      "allowedValues": [
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
+      ],
+        "metadata",
+        {
+          "description": "Choose OS type"
+        },
+        "defaultValue": "2016-Datacenter"
     }
   },
   "variables": {
     "assetLocation": "https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab",
     "adVMSize": "Standard_A2",
-    "adOSVersion": "2016-Datacenter",
+    "adOSVersion": "[parameters('imageSKU')]",
     "vmNetworkSubnet": "10.0.0.0/24",
     "virtualNetworkAddressRange": "10.0.0.0/16",
     "primaryAdIpAddress": "10.0.0.4",
@@ -42,11 +54,12 @@
     "adTemplateURLCloud": "[concat(variables('assetLocation'),'/data/adVmTemplate.json')]",
     "adTemplateURL": "/adVmTemplate.json",
     "adStorageNameOLD": "[tolower(concat('adsa',resourceGroup().name))]",
-    "adStorageName": "[tolower(concat('adsa1h2n3j4i5'))]",
+    "adStorageName": "[tolower(concat('crl', uniqueString(resourceGroup().id)))]",
+    "adStorageName1": "[tolower(concat('adsa1h2n3j4i5'))]",
     "dnsPrefix": "[tolower(concat(resourceGroup().name,'dc'))]",
     "adVmDeployment": "CreateADVMs",
     "adVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('adVmDeployment'))]",
-    "adPDCVMName": "[substring(concat('ADVM',resourceGroup().Name),0,5)]",
+    "adPDCVMName": "[substring(concat('DC1',resourceGroup().Name),0,5)]",
     "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
