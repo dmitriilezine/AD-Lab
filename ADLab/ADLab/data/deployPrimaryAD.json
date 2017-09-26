@@ -27,7 +27,7 @@
         "description": "The password for the Administrator account of the new VMs and Domain"
       }
     },
-    "assetLocation": {
+    "assetLocationCloud": {
       "type": "string",
       "metadata": {
         "description": "The location of resources that the script is dependent on such as linked templates and DSC modules"
@@ -35,7 +35,7 @@
     }
   },
   "variables": {
-    "adPDCModulesURL": "[concat(parameters('assetLocation'),'/data/CreateADPDC.ps1.zip')]",
+    "adPDCModulesURL": "[concat(parameters('assetLocationCloud'),'/data/CreateADPDC.ps1.zip')]",
     "adPDCConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC"
   },
   "resources": [

@@ -19,14 +19,14 @@
     "adminPassword": {
       "type": "securestring",
       "metadata": {
-        "description": "The password for the Administrator account of the new VMs and Domain"
+        "description": "The password for the Administrator account of the new VMs and Domain. If you do not change it, then it will look like this: Subscription#SUBSCRIPTIONID"
       },
       "defaultValue": "[concat('Subscription#',subscription().subscriptionId)]"
     },
     "sourceClientIP": {
       "type": "string",
       "metadata": {
-        "description": "Internet IP of the computer that will manage this lab"
+        "description": "Internet IP of the computer that will RDP into this lab. Change this to * to allow all Internet devices to brute force your lab or find out external IP or subnet for your device to lock down access to your lab from the Internet. Choice is yours."
       },
       "defaultValue": "127.0.0.1"
     }
