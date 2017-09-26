@@ -36,6 +36,7 @@
     <None Include="deployPrimaryAD.json" />
     <None Include="DomainJoinDSC.zip" />
     <None Include="nic.json" />
+    <None Include="readme.md" />
     <None Include="vnet-with-dns-server.json" />
   </ItemGroup>
   <Target Name="GetReferenceAssemblyPaths" />
