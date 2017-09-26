@@ -42,7 +42,7 @@
     "adTemplateURLCloud": "[concat(variables('assetLocation'),'/data/adVmTemplate.json')]",
     "adTemplateURL": "/adVmTemplate.json",
     "adStorageNameOLD": "[tolower(concat('adsa',resourceGroup().name))]",
-    "adStorageName": "[tolower(concat('adsa1h2n3j4i5l'))]",
+    "adStorageName": "[tolower(concat('adsa1h2n3j4i5'))]",
     "dnsPrefix": "[tolower(concat(resourceGroup().name,'dc'))]",
     "adVmDeployment": "CreateADVMs",
     "adVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('adVmDeployment'))]",
