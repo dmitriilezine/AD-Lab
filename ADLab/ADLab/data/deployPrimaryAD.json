@@ -62,7 +62,8 @@
         "protectedSettings": {
           "items": {
             "adminPassword": "[parameters('adminPassword')]"
-          }
+          },
+          "DataBlobUri": "[concat(parameters('assetLocation'),'/data/AD-Data.psd1')]"
         }
       }
     }

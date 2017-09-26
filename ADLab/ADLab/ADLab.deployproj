@@ -27,6 +27,7 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <None Include="azuredeploy.parameters.json" />
+    <None Include="data\AD-Data.psd1" />
     <None Include="data\adVmTemplate.json" />
     <None Include="data\CreateADPDC.ps1.zip" />
     <None Include="Deployment.targets">
