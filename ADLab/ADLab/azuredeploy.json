@@ -32,14 +32,14 @@
     }
   },
   "variables": {
-    "assetLocationCloud": "https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab",
+    "assetLocation": "https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab",
     "adVMSize": "Standard_A2",
     "adOSVersion": "2016-Datacenter",
     "vmNetworkSubnet": "10.0.0.0/24",
     "virtualNetworkAddressRange": "10.0.0.0/16",
     "primaryAdIpAddress": "10.0.0.4",
     "storageAccountType": "Standard_LRS",
-    "adTemplateURLCloud": "[concat(variables('assetLocationCloud'),'/data/adVmTemplate.json')]",
+    "adTemplateURLCloud": "[concat(variables('assetLocation'),'/data/adVmTemplate.json')]",
     "adTemplateURL": "/adVmTemplate.json",
     "adStorageNameOLD": "[tolower(concat('adsa',resourceGroup().name))]",
     "adStorageName": "[tolower(concat('adsa1h2n3j4i5l'))]",
@@ -47,11 +47,11 @@
     "adVmDeployment": "CreateADVMs",
     "adVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('adVmDeployment'))]",
     "adPDCVMName": "[substring(concat('ADVM',resourceGroup().Name),0,5)]",
-    "deployPrimaryAdTemplateURL": "[concat(variables('assetLocationCloud'),'/data/deployPrimaryAD.json')]",
+    "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
     "updateVNetDNS1": "UpdateVNetDNS",
-    "vnetwithDNSTemplateURL": "[concat(variables('assetLocationCloud'),'/data/vnet-with-dns-server.json')]",
+    "vnetwithDNSTemplateURL": "[concat(variables('assetLocation'),'/data/vnet-with-dns-server.json')]",
     "publicLBName": "[concat('ADPLB',resourceGroup().name)]",
     "publicIPAddressName": "[concat('ADlbPublicIP',resourceGroup().name)]",
     "lbFE": "[concat('ADLBFE',resourceGroup().name)]",
@@ -251,7 +251,7 @@
             "value": "[parameters('adminPassword')]"
           },
           "assetLocation": {
-            "value": "[variables('assetLocationCloud')]"
+            "value": "[variables('assetLocation')]"
           }
         }
       }
