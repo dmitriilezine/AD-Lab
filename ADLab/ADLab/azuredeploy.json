@@ -41,6 +41,17 @@
       },
       "defaultValue": "2016-Datacenter"
     },
+    "deployC2": {
+      "type": "string",
+      "defaultValue": "Yes",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "VM is joined to ADDS"
+      }
+    },
     "C2VMImageSKU": {
       "type": "string",
       "allowedValues": [
@@ -51,6 +62,17 @@
         "description": "Choose OS type for C2 Server"
       },
       "defaultValue": "2016-Datacenter"
+    },
+    "deployATA": {
+      "type": "string",
+      "defaultValue": "Yes",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "VM is not joined to ADDS"
+      }
     },
     "ATAVMImageSKU": {
       "type": "string",
@@ -63,6 +85,17 @@
       },
       "defaultValue": "2016-Datacenter"
     },
+    "deployVM1": {
+      "type": "string",
+      "defaultValue": "Yes",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "VM1 is joined to ADDS"
+      }
+    },
     "VM1VMImageSKU": {
       "type": "string",
       "allowedValues": [
@@ -73,6 +106,17 @@
         "description": "Choose OS type for VM1 Server"
       },
       "defaultValue": "2016-Datacenter"
+    },
+    "deployVM2": {
+      "type": "string",
+      "defaultValue": "Yes",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "VM2 is joined to ADDS"
+      }
     },
     "VM2VMImageSKU": {
       "type": "string",
@@ -386,6 +430,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('deployATA'),'Yes')]",
       "name": "[variables('ataVmDeployment')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -433,6 +478,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('deployC2'),'Yes')]",
       "name": "[variables('c2VmDeployment')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -486,6 +532,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('deployVM1'),'Yes')]",
       "name": "[variables('vm1VmDeployment')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -539,6 +586,7 @@
       }
     },
     {
+      "condition": "[equals(parameters('deployVM2'),'Yes')]",
       "name": "[variables('vm2VmDeployment')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
