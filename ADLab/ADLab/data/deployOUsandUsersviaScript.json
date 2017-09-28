@@ -52,7 +52,7 @@
           "fileUris": "[variables('psScriptURL')]"
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestrcted -File myscript.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'))]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestrcted -File installthings.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'))]"
         }
       }
     }
