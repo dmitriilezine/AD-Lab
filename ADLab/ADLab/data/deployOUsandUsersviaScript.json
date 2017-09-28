@@ -35,7 +35,7 @@
   },
   "variables": {
     "psScriptURL": "[concat(parameters('assetLocation'),'/data/installthings.ps1')]",
-    "psScript2URL": "[concat(parameters('assetLocation'),'/data/data.txt')]"
+    "psScript2URL": "[concat(parameters('assetLocation'),'/data/ad-data.csv')]"
   },
   "resources": [
     {
