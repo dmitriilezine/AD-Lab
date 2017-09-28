@@ -47,9 +47,10 @@
         "type": "CustomScriptExtension",
         "typeHandlerVersion": "1.9",
         "autoUpgradeMinorVersion": true,
-
         "settings": {
-          "fileUris": "[variables('psScriptURL')]"
+          "fileUris": [
+            "[variables('psScriptURL')]"
+          ]
         },
         "protectedSettings": {
           "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File installthings.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'))]"
