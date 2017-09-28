@@ -84,6 +84,17 @@
         "description": "Choose OS type for VM2 Server"
       },
       "defaultValue": "2016-Datacenter"
+    },
+    "deployOUandUsers": {
+      "type": "string",
+      "defaultValue": "No",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "Currently under development. DO NOT SELECT YES. If select Yes, it will deploy OUs and a few user accounts into OUs"
+      }
     }
   },
   "variables": {
@@ -122,6 +133,7 @@
     "vm1VMName": "[substring(concat('VM1',resourceGroup().Name),0,5)]",
     "vm2VMName": "[substring(concat('VM2',resourceGroup().Name),0,5)]",
     "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
+    "deployOUsandUsersTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsers.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
     "updateVNetDNS1": "UpdateVNetDNS",
@@ -154,6 +166,8 @@
     "vm1VmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('vm1VmDeployment'))]",
     "vm2VmDeployment": "CreateVM2VM",
     "vm2VmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('vm2VmDeployment'))]",
+    "ouandusersDeployment": "deployOUsandUserAccounts",
+    "ouandusersDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('ouandusersDeployment'))]",
     "subnets": [
       {
         "name": "[variables('staticSubnetName')]",
@@ -573,6 +587,40 @@
           },
           "domainName": {
             "value": "[parameters('domainName')]"
+          }
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('deployOUandUsers'),'Yes')]",
+      "comments": "deploy OUs and User accounts via DSC extension",
+      "name": "[variables('ouandusersDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployOUsandUsersTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "primaryADName": {
+            "value": "[variables('adPDCVMName')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
           }
         }
       }
