@@ -32,6 +32,7 @@
     <None Include="data\ataVmTemplate.json" />
     <None Include="data\c2VmTemplate.json" />
     <None Include="data\CreateADPDC.zip" />
+    <None Include="data\data.txt" />
     <None Include="data\deployOUsandUsersviaDSC.json" />
     <None Include="data\deployOUsandUsersviaScript.json" />
     <None Include="data\DomainJoin.zip" />
