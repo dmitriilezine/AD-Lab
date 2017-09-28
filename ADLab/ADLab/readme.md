@@ -1,5 +1,6 @@
 ﻿
 This solution deploys one ADDS DC, and 4 VMs. Three VMs will be joined to the ADDS. Tested it with Windows Server 2016 only.
+Now you can choose which VMs to deploy. 
 
 
 

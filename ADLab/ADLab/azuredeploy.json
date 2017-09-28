@@ -129,7 +129,7 @@
       },
       "defaultValue": "2016-Datacenter"
     },
-    "deployOUandUsers": {
+    "deployOUandUsersviaScript": {
       "type": "string",
       "defaultValue": "No",
       "allowedValues": [
@@ -137,7 +137,22 @@
         "Yes"
       ],
       "metadata": {
-        "description": "Currently under development. DO NOT SELECT YES. If select Yes, it will deploy OUs and a few user accounts into OUs"
+        "description": "Currently under development. Select Yes at your own risk"
+      }
+    },
+    "deployOUandUsersviaDSC": {
+      "type": "string",
+      "defaultValue": "No",
+      "allowedValues": [
+        "No",
+        "Net",
+        "Nope",
+        "Nada",
+        "Ne nado",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "Currently under development. DO NOT SELECT YES. If select Yes, it will try and fail to deploy OUs and a few user accounts into OUs"
       }
     }
   },
@@ -177,7 +192,8 @@
     "vm1VMName": "[substring(concat('VM1',resourceGroup().Name),0,5)]",
     "vm2VMName": "[substring(concat('VM2',resourceGroup().Name),0,5)]",
     "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
-    "deployOUsandUsersTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsers.json')]",
+    "deployOUsandUsersTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaDSC.json')]",
+    "deployOUsandUsersviaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaScript.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
     "updateVNetDNS1": "UpdateVNetDNS",
@@ -212,6 +228,8 @@
     "vm2VmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('vm2VmDeployment'))]",
     "ouandusersDeployment": "deployOUsandUserAccounts",
     "ouandusersDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('ouandusersDeployment'))]",
+    "ouandusersviaScriptDeployment": "deployOUsandUserAccountsviaScript",
+    "ouandusersviaScriptDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('ouandusersviaScriptDeployment'))]",
     "subnets": [
       {
         "name": "[variables('staticSubnetName')]",
@@ -640,7 +658,7 @@
       }
     },
     {
-      "condition": "[equals(parameters('deployOUandUsers'),'Yes')]",
+      "condition": "[equals(parameters('deployOUandUsersviaDSC'),'Yes')]",
       "comments": "deploy OUs and User accounts via DSC extension",
       "name": "[variables('ouandusersDeployment')]",
       "type": "Microsoft.Resources/deployments",
@@ -652,6 +670,40 @@
         "mode": "Incremental",
         "templateLink": {
           "uri": "[variables('deployOUsandUsersTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "primaryADName": {
+            "value": "[variables('adPDCVMName')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
+          }
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('deployOUandUsersviaScript'),'Yes')]",
+      "comments": "deploy OUs and User accounts via Script extension",
+      "name": "[variables('ouandusersviaScriptDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployOUsandUsersviaScriptTemplateURL')]",
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
