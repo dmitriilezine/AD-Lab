@@ -39,6 +39,7 @@
     "csv": "[concat('ad-data.csv')]",
     "ou": "[concat('CN=Users,DC=contoso,DC=com')]",
     "upn": "[concat('contoso=com')]"
+
   },
   "resources": [
     {
