@@ -35,8 +35,8 @@
   },
   "variables": {
     "psScriptURL": "[concat(parameters('assetLocation'),'/data/installthings.ps1')]",
-    "psScript2URL": "[concat(parameters('assetLocation'),'/data/ad-data.csv')]",
-    "csv": "[concat('ad-data.csv')]",
+    "psScript2URL": "[concat(parameters('assetLocation'),'/data/ad-data2.csv')]",
+    "csv": "[concat('ad-data2.csv')]",
     "ou": "[concat('CN=Users,DC=contoso,DC=com')]",
     "upn": "[concat('contoso.com')]"
 
