@@ -35,7 +35,10 @@
   },
   "variables": {
     "psScriptURL": "[concat(parameters('assetLocation'),'/data/installthings.ps1')]",
-    "psScript2URL": "[concat(parameters('assetLocation'),'/data/ad-data.csv')]"
+    "psScript2URL": "[concat(parameters('assetLocation'),'/data/ad-data.csv')]",
+    "csv": "[concat('/.\/ad-data.csv')]",
+    "ou": "[concat('CN=Users,DC=contoso,DC=com')]",
+    "upn": "[concat('contoso=com')]"
   },
   "resources": [
     {
@@ -55,7 +58,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File installthings.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'))]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File installthings.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -csv ',variables('csv'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]"
         }
       }
     }
