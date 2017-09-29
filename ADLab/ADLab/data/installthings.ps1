@@ -36,7 +36,7 @@ New-Item -ItemType Directory c:\CreatedByScript
         $Password = $User.Password 
 	             
         # New-ADUser -Name $Sam -DisplayName "$DisplayName" -SamAccountName $Sam -UserPrincipalName $Upn -GivenName "$UserFirstName" -Surname "$UserLastName" -Description "$Description" -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) -Enabled $true -Path "$OrganisationalUnit" -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
-         New-ADUser -Name "$Sam" -DisplayName "$DisplayName" -SamAccountName "$Sam" -UserPrincipalName "$Upn" -GivenName "$UserFirstName" -Surname "$UserLastName" -Description "$Description" -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -Verbose 
+         New-ADUser -Name "$Sam" -DisplayName "$DisplayName" -SamAccountName "$Sam" -UserPrincipalName "$Upn" -GivenName "$UserFirstName" -Surname "$UserLastName" -Description TestUser -AccountPassword (ConvertTo-SecureString P@ss0rd123456 -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -Verbose 
     } 
 
 Stop-Transcript
