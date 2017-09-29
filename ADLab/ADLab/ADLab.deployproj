@@ -37,7 +37,6 @@
     <None Include="data\DomainJoin.zip" />
     <None Include="data\ExtendAD.ps1" />
     <None Include="data\extendadds.zip" />
-    <None Include="data\installthings.ps1" />
     <None Include="data\vm1VmTemplate.json" />
     <None Include="data\vm2VmTemplate.json" />
     <None Include="Deployment.targets">
