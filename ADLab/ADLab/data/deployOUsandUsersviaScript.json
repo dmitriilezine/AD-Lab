@@ -44,6 +44,7 @@
   "resources": [
     {
       "name": "[concat(parameters('primaryADName'),'/deployOUsandUsersviaScript')]",
+      "comments": "deploy OUs and User accounts via Script extension",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
