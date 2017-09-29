@@ -27,7 +27,7 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <None Include="azuredeploy.parameters.json" />
-    <None Include="data\ad-data.csv" />
+    <None Include="data\ad-data4.csv" />
     <None Include="data\AD-Data.psd1" />
     <None Include="data\adVmTemplate.json" />
     <None Include="data\ataVmTemplate.json" />

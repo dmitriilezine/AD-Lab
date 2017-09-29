@@ -25,7 +25,7 @@ New-Item -ItemType Directory c:\CreatedByScript
  #New-ADUser -Name TestUser -DisplayName TestUser -SamAccountName TestUser -UserPrincipalName TestUser@contoso.com -GivenName Test -Surname User -Description TestUser -AccountPassword (ConvertTo-SecureString P@ssw0rd123456 -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
 
   #  $UserCsv = Import-Csv -Path "$UsersList" 
-	$UserCsv = Import-Csv -Path .\ad-data.csv
+	$UserCsv = Import-Csv -Path C:\CreatedByScript\ad-data.csv
     ForEach ($User in $UserCsv) 
     { 
         $DisplayName = $User.Firstname + " " + $User.Lastname 
