@@ -35,7 +35,7 @@
     <None Include="data\deployOUsandUsersviaDSC.json" />
     <None Include="data\deployOUsandUsersviaScript.json" />
     <None Include="data\DomainJoin.zip" />
-    <None Include="data\ExtendAD1.ps1" />
+    <None Include="data\ExtendAD234.ps1" />
     <None Include="data\extendadds.zip" />
     <None Include="data\installthings.ps1" />
     <None Include="data\vm1VmTemplate.json" />
