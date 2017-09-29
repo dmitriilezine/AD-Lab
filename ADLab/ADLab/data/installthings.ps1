@@ -1,14 +1,6 @@
 ﻿# Create Users in ADDS
 # Folders
 
-New-Item -ItemType Directory c:\CreatedByScript
- $LogFile = ("AD-Account-Creation-{0:yyyy-MM-dd-HH-mm-ss}.log" -f (Get-Date)) 
- $Log = "c:\CreatedByScript\$LogFile" 
- Start-Transcript $Log
-
-# Install iis
-Install-WindowsFeature web-server -IncludeManagementTools
-
 [CmdletBinding()] 
 Param (
     [string]$user,
@@ -30,7 +22,10 @@ Param (
 )
 
 Import-Module ActiveDirectory
- 
+New-Item -ItemType Directory c:\CreatedByScript
+ $LogFile = ("AD-Account-Creation-{0:yyyy-MM-dd-HH-mm-ss}.log" -f (Get-Date)) 
+ $Log = "c:\CreatedByScript\$LogFile" 
+ Start-Transcript $Log
  
 ## If users list csv file exists then run the script 
 If (Test-Path $userslist) 
