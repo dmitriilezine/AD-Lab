@@ -29,6 +29,9 @@ New-Item -ItemType Directory c:\CreatedByScript
  
  Import-Module ActiveDirectory
 
+ New-ADUser -Name TestUser -DisplayName TestUser -SamAccountName TestUser -UserPrincipalName TestUser@contoso.com -GivenName Test -Surname User -Description TestUser -AccountPassword (ConvertTo-SecureString P@ssw0rd123456 -AsPlainText -Force) -Enabled $true -Path CN=Users,DC=contoso,DC=com -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
+         
+
 ## If users list csv file exists then run the script 
 #If (Test-Path $userslist) 
 #{
