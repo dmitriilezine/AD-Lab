@@ -34,9 +34,7 @@
     }
   },
   "variables": {
-    "psScriptURL": "[concat(parameters('assetLocation'),'/data/installthings.ps1')]",
-    "psScript2URL": "[concat(parameters('assetLocation'),'/data/ad-data4.csv')]",
-    "csv": "[concat('ad-data4.csv')]",
+    "psScriptURL": "[concat(parameters('assetLocation'),'/data/ExtendAD.ps1')]",
     "ou": "[concat('CN=Users,DC=contoso,DC=com')]",
     "upn": "[concat('contoso.com')]"
 
@@ -55,12 +53,11 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[variables('psScriptURL')]",
-            "[variables('psScript2URL')]"
+            "[variables('psScriptURL')]"
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File installthings.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -csv ',variables('csv'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ExtendAD.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]"
         }
       }
     }

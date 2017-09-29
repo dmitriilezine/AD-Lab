@@ -3,29 +3,19 @@
 Param (
     [string]$user,
     [string]$password,
-	[parameter(Mandatory=$true)] 
-    [alias("csv")] 
-    $UsersList, 
-    [parameter(Mandatory=$true)] 
-    [alias("ou")] 
-    $OrganisationalUnit, 
-    [parameter(Mandatory=$true)] 
-    [alias("upn")] 
-    $AdUpn,
-    [switch]$UseSsl
+	[string]$ou,
+    [string]$upn
 )
 
-
-New-Item -ItemType Directory c:\CreatedByScript
- $LogFile = ("AD-Account-Creation-{0:yyyy-MM-dd-HH-mm-ss}.log" -f (Get-Date)) 
- $Log = "c:\CreatedByScript\$LogFile" 
- Start-Transcript $Log
+ $LogFile1 = ("AD-Account-Creation-{0:yyyy-MM-dd-HH-mm-ss}.log" -f (Get-Date)) 
+ $Log1 = "c:\ExtendAD\scripts\$LogFile1" 
+ Start-Transcript $Log1
  
  Import-Module ActiveDirectory
  #New-ADUser -Name TestUser -DisplayName TestUser -SamAccountName TestUser -UserPrincipalName TestUser@contoso.com -GivenName Test -Surname User -Description TestUser -AccountPassword (ConvertTo-SecureString P@ssw0rd123456 -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
 
   #  $UserCsv = Import-Csv -Path "$UsersList" 
-	$UserCsv = Import-Csv -Path C:\CreatedByScript\ad-data.csv
+	$UserCsv = Import-Csv -Path c:\ExtendAD\scripts\ad-data.csv
     ForEach ($User in $UserCsv) 
     { 
         $DisplayName = $User.Firstname + " " + $User.Lastname 
@@ -36,8 +26,8 @@ New-Item -ItemType Directory c:\CreatedByScript
         $Description = $DisplayName 
         $Password = $User.Password 
 	             
-        # New-ADUser -Name $Sam -DisplayName "$DisplayName" -SamAccountName $Sam -UserPrincipalName $Upn -GivenName "$UserFirstName" -Surname "$UserLastName" -Description "$Description" -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) -Enabled $true -Path "$OrganisationalUnit" -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
-         New-ADUser -Name "$Sam" -DisplayName "$DisplayName" -SamAccountName "$Sam" -UserPrincipalName "$Upn" -GivenName "$UserFirstName" -Surname "$UserLastName" -Description TestUser -AccountPassword (ConvertTo-SecureString P@ss0rd123456 -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -Verbose 
+        New-ADUser -Name $Sam -DisplayName "$DisplayName" -SamAccountName $Sam -UserPrincipalName $Upn -GivenName "$UserFirstName" -Surname "$UserLastName" -Description "$Description" -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) -Enabled $true -Path "$ou" -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
+        # New-ADUser -Name "$Sam" -DisplayName "$DisplayName" -SamAccountName "$Sam" -UserPrincipalName "$Upn" -GivenName "$UserFirstName" -Surname "$UserLastName" -Description TestUser -AccountPassword (ConvertTo-SecureString P@ss0rd123456 -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -Verbose 
     } 
 
 Stop-Transcript

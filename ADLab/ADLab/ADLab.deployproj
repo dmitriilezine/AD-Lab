@@ -27,7 +27,6 @@
   <ItemGroup>
     <Content Include="azuredeploy.json" />
     <None Include="azuredeploy.parameters.json" />
-    <None Include="data\ad-data4.csv" />
     <None Include="data\AD-Data.psd1" />
     <None Include="data\adVmTemplate.json" />
     <None Include="data\ataVmTemplate.json" />
@@ -36,6 +35,8 @@
     <None Include="data\deployOUsandUsersviaDSC.json" />
     <None Include="data\deployOUsandUsersviaScript.json" />
     <None Include="data\DomainJoin.zip" />
+    <None Include="data\ExtendAD.ps1" />
+    <None Include="data\extendadds.zip" />
     <None Include="data\installthings.ps1" />
     <None Include="data\vm1VmTemplate.json" />
     <None Include="data\vm2VmTemplate.json" />
