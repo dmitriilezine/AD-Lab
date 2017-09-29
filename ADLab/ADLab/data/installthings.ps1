@@ -29,7 +29,7 @@ New-Item -ItemType Directory c:\CreatedByScript
  
  Import-Module ActiveDirectory
 
- New-ADUser -Name TestUser -DisplayName TestUser -SamAccountName TestUser -UserPrincipalName TestUser@contoso.com -GivenName Test -Surname User -Description TestUser -AccountPassword (ConvertTo-SecureString P@ssw0rd123456 -AsPlainText -Force) -Enabled $true -Path CN=Users,DC=contoso,DC=com -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
+ New-ADUser -Name TestUser -DisplayName TestUser -SamAccountName TestUser -UserPrincipalName TestUser@contoso.com -GivenName Test -Surname User -Description TestUser -AccountPassword (ConvertTo-SecureString P@ssw0rd123456 -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
          
 
 ## If users list csv file exists then run the script 
@@ -47,29 +47,30 @@ New-Item -ItemType Directory c:\CreatedByScript
         $Description = $DisplayName 
         $Password = $User.Password 
 
-	Write-Host $DisplayName
-	Write-Host $UserFirstName
-	Write-Host $UserLastName
-	Write-Host $Sam
-	Write-Host $Upn
-	Write-Host $Description
+		Write-Host $DisplayName
+		Write-Host $UserFirstName
+		Write-Host $UserLastName
+		Write-Host $Sam
+		Write-Host $Upn
+		Write-Host $Description
  
-        $UserExist = Get-ADUser -filter "SamAccountName -eq '$Sam'" 
+        #$UserExist = Get-ADUser -filter "SamAccountName -eq '$Sam'" 
  
-        If ($UserExist -eq $null) 
-        { 
-            New-ADUser -Name $Sam -DisplayName "$DisplayName" -SamAccountName $Sam -UserPrincipalName $Upn -GivenName "$UserFirstName" -Surname "$UserLastName" -Description "$Description" -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) -Enabled $true -Path "$OrganisationalUnit" -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
+        #If ($UserExist -eq $null) 
+        #{ 
+           # New-ADUser -Name $Sam -DisplayName "$DisplayName" -SamAccountName $Sam -UserPrincipalName $Upn -GivenName "$UserFirstName" -Surname "$UserLastName" -Description "$Description" -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) -Enabled $true -Path "$OrganisationalUnit" -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
+         New-ADUser -Name "$Sam" -DisplayName "$DisplayName" -SamAccountName "$Sam" -UserPrincipalName "$Upn" -GivenName "$UserFirstName" -Surname "$UserLastName" -Description "$Description" -AccountPassword (ConvertTo-SecureString $Password -AsPlainText -Force) -Enabled $true -Path 'CN=Users,DC=contoso,DC=com' -ChangePasswordAtLogon $true –PasswordNeverExpires $false -AccountExpirationDate $AdExpire -Verbose 
          
-            If ($AdGroup) 
-            { 
-                Add-ADGroupMember "$AdGroup" $Sam -Verbose 
-            } 
-        } 
+        #    If ($AdGroup) 
+        #    { 
+        #        Add-ADGroupMember "$AdGroup" $Sam -Verbose 
+        #    } 
+        #} 
  
-        Else 
-        { 
-            Write-Host "User with SAM:$Sam already exists" 
-        } 
+        #Else 
+        #{ 
+        #    Write-Host "User with SAM:$Sam already exists" 
+        #} 
     } 
 
 	Stop-Transcript
