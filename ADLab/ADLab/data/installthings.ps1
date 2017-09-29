@@ -21,12 +21,14 @@ Param (
     [switch]$UseSsl
 )
 
-Import-Module ActiveDirectory
+
 New-Item -ItemType Directory c:\CreatedByScript
  $LogFile = ("AD-Account-Creation-{0:yyyy-MM-dd-HH-mm-ss}.log" -f (Get-Date)) 
  $Log = "c:\CreatedByScript\$LogFile" 
  Start-Transcript $Log
  
+ Import-Module ActiveDirectory
+
 ## If users list csv file exists then run the script 
 #If (Test-Path $userslist) 
 #{
@@ -41,6 +43,13 @@ New-Item -ItemType Directory c:\CreatedByScript
         $Upn = $Sam + "@$AdUpn" 
         $Description = $DisplayName 
         $Password = $User.Password 
+
+	Write-Host $DisplayName
+	Write-Host $UserFirstName
+	Write-Host $UserLastName
+	Write-Host $Sam
+	Write-Host $Upn
+	Write-Host $Description
  
         $UserExist = Get-ADUser -filter "SamAccountName -eq '$Sam'" 
  
