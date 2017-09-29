@@ -28,7 +28,7 @@ New-Item -ItemType Directory c:\CreatedByScript
  Start-Transcript $Log
  
 ## If users list csv file exists then run the script 
-If (Test-Path $userslist) 
+#If (Test-Path $userslist) 
 { 
     $UserCsv = Import-Csv -Path "$UsersList" 
  
@@ -63,12 +63,12 @@ If (Test-Path $userslist) 
 	Stop-Transcript
 } 
  
-Else 
-{ 
-    Write-Host "" 
-    Write-Host "There's no user list to work with." 
-    Write-Host "" 
-} 
+#Else 
+#{ 
+#    Write-Host "" 
+#    Write-Host "There's no user list to work with." 
+#    Write-Host "" 
+#} 
  
 ## End
  
