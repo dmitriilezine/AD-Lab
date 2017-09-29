@@ -34,7 +34,7 @@
     }
   },
   "variables": {
-    "psScriptURL": "[concat(parameters('assetLocation'),'/data/ExtendAD1.ps1')]",
+    "psScriptURL": "[concat(parameters('assetLocation'),'/data/ExtendAD.ps1')]",
     "ou": "[concat('CN=Users,DC=contoso,DC=com')]",
     "upn": "[concat('contoso.com')]"
 
@@ -57,7 +57,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ExtendAD1.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]"
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ExtendAD.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]"
         }
       }
     }
