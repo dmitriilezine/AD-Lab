@@ -23,6 +23,8 @@ Start-Transcript $Log
 Invoke-WebRequest  https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab/data/extendadds.zip -OutFile c:\ExtendAD\extendadds.zip
 Expand-Archive c:\ExtendAD\extendadds.zip c:\ExtendAD\scripts -Force
 
+Start-Sleep -Seconds 5
+
 # Start-Process 
 powershell -ExecutionPolicy Unrestricted -File c:\ExtendAD\scripts\extendadds.ps1 -user $user -password $password -ou $ou -upn $upn
 
