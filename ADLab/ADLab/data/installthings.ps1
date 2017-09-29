@@ -27,8 +27,6 @@ Import-Module ActiveDirectory
 ## If users list csv file exists then run the script 
 If (Test-Path $userslist) 
 { 
-    If (Test-Path $UsersList)
-
     $UserCsv = Import-Csv -Path "$UsersList" 
  
     ForEach ($User in $UserCsv) 
