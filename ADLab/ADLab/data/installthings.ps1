@@ -29,7 +29,7 @@ New-Item -ItemType Directory c:\CreatedByScript
  
 ## If users list csv file exists then run the script 
 #If (Test-Path $userslist) 
-{ 
+#{
     $UserCsv = Import-Csv -Path "$UsersList" 
  
     ForEach ($User in $UserCsv) 
@@ -61,7 +61,7 @@ New-Item -ItemType Directory c:\CreatedByScript
     } 
 
 	Stop-Transcript
-} 
+#} 
  
 #Else 
 #{ 
