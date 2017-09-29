@@ -4,6 +4,9 @@
   "parameters": {
     "domainName": {
       "type": "string",
+      "allowedValues": [
+        "contoso.com"
+      ],
       "metadata": {
         "description": "The domain name needs to be consisting of one or more labels separated by . E.g. contoso.com"
       },
