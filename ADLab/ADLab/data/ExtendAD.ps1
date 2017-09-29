@@ -19,7 +19,6 @@ Start-Transcript $Log
 
 # Download Scripts
 
-# Invoke-WebRequest  https://github.com/dmitriilezine/AD-Lab/tree/master/ADLab/ADLab/data/extendadds.zip -OutFile c:\ExtendAD\extendadds.zip
 Invoke-WebRequest  https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab/data/extendadds.zip -OutFile c:\ExtendAD\extendadds.zip
 Expand-Archive c:\ExtendAD\extendadds.zip c:\ExtendAD\scripts -Force
 
