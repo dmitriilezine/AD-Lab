@@ -140,7 +140,7 @@
         "Yes"
       ],
       "metadata": {
-        "description": "Currently under development. Select Yes at your own risk"
+        "description": "Under development. It will add 200+ user accounts, 20+ security groups and assigns them with all kind of different permissions. For testing purposes only."
       }
     },
     "deployOUandUsersviaDSC": {
