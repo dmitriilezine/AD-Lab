@@ -10,7 +10,7 @@ If you want to populate ADDS with bunch of test user accounts and groups, which 
 Make sure to configure Scheduled Shutdown on all VMs. Five VMs will run up compute bill fairly quickly.
 
 DC VM will have Public IP assigned to it. You will need to change NSG rule to allow access to the Public IP. Either do this during initial deployment or later on in NSG. 
-Provide your PC Internet IP or * if ok with everyone else trying to get access to it.
+Provide your PC Internet IP or * if ok with everyone else on the Internet trying to get access to it - see Notice/Warning below.
 
 Based on azure quick start templates. use it at your own risk.
 
