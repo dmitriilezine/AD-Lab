@@ -1,4 +1,5 @@
 ﻿
+## Details
 This solution deploys one ADDS DC (CONTOSO.COM), and 4 VMs. Three VMs will be joined to the ADDS. 
 While you have a choice between Windows Server 2016 and 2012R2, I only tested it with Windows Server 2016.
 
@@ -17,4 +18,8 @@ Based on azure quick start templates. use it at your own risk.
     <img src="http://azuredeploy.net/deploybutton.png"/>
 </a>
 
+
+## NOTICE/WARNING
+* This template is explicitely designed for a lab environment. A few compromises were made, especially with regards to credential passing to 
+DSC and script automation. All user accounts have defined password in the clear text in the installation files. Which can be reused by someone and target your AD.
 
