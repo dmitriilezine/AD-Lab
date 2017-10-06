@@ -66,8 +66,7 @@
         "protectedSettings": {
           "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ExtendAD-Lab1.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]",
           "storageAccountName": "crlab",
-          "storageAccountKey": "parameters('storageAccountKey')"
-
+          "storageAccountKey": "[parameters('storageAccountKey')]"
         }
       }
     }
