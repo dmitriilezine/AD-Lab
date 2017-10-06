@@ -132,6 +132,24 @@
       },
       "defaultValue": "2016-Datacenter"
     },
+    "deployLab1ViaScript": {
+      "type": "string",
+      "defaultValue": "No",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "Under development. For testing purposes only."
+      }
+    },
+    "storageAccountKey": {
+      "type": "string",
+      "metadata": {
+        "description": "Key to access the storage account"
+      },
+      "defaultValue": "Copy and Paste Storage Account Key Here"
+    },
     "deployOUandUsersviaScript": {
       "type": "string",
       "defaultValue": "No",
@@ -161,6 +179,7 @@
   },
   "variables": {
     "assetLocation": "https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab",
+    "assetLocationStorageAccount": "https://crlab.blob.core.windows.net",
     "adVMSize": "Standard_A2",
     "adOSVersion": "[parameters('DomainControllerImageSKU')]",
     "ataOSVersion": "[parameters('ATAVMImageSKU')]",
@@ -197,6 +216,7 @@
     "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
     "deployOUsandUsersTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaDSC.json')]",
     "deployOUsandUsersviaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaScript.json')]",
+    "deployLab1viaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployLab1viaScript.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
     "updateVNetDNS1": "UpdateVNetDNS",
@@ -233,6 +253,8 @@
     "ouandusersDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('ouandusersDeployment'))]",
     "ouandusersviaScriptDeployment": "deployOUsandUserAccountsviaScript",
     "ouandusersviaScriptDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('ouandusersviaScriptDeployment'))]",
+    "lab1viaScriptDeployment": "deployLab1viaScript",
+    "lab1viaScriptDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('lab1viaScriptDeployment'))]",
     "subnets": [
       {
         "name": "[variables('staticSubnetName')]",
@@ -724,6 +746,43 @@
           },
           "assetLocation": {
             "value": "[variables('assetLocation')]"
+          }
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('deployLab1ViaScript'),'Yes')]",
+      "comments": "deploy Lab1 via Script extension",
+      "name": "[variables('lab1viaScriptDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployLab1viaScriptTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "primaryADName": {
+            "value": "[variables('adPDCVMName')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocationStorageAccount": {
+            "value": "[variables('assetLocationStorageAccount')]"
+          },
+          "storageAccountKey": {
+            "value": "[parameters('storageAccountKey')]"
           }
         }
       }
