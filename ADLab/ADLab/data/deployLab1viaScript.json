@@ -40,7 +40,7 @@
     }
   },
   "variables": {
-    "psScriptURL": "[concat(parameters('assetLocationStorageAccount'),'/scripts/ExtendAD-Lab1.ps1')]",
+    "psScriptURL": "[concat(parameters('assetLocationStorageAccount'),'/scripts/ExtendAD-Lab.ps1')]",
     "psScriptZipPackageURL": "[concat(parameters('assetLocationStorageAccount'),'/scripts/import.zip')]",
     "ouold": "[concat('CN=Users,DC=contoso,DC=com')]",
     "ou": "[concat('DC=contoso,DC=com')]",
@@ -66,7 +66,7 @@
           ]
         },
         "protectedSettings": {
-          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ExtendAD-Lab1.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]",
+          "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ExtendAD-Lab.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]",
           "storageAccountName": "crlab",
           "storageAccountKey": "[parameters('storageAccountKey')]"
         }

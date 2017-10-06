@@ -23,8 +23,11 @@ Start-Transcript $Log
 #Expand-Archive c:\ExtendADLab1\import.zip c:\ExtendADLab1\scripts -Force
 Expand-Archive .\import.zip c:\ExtendADLab1\scripts -Force
 
+# Wait 5 seconds
+Start-Sleep -Seconds 5
+
 # Start-Process 
-#powershell -ExecutionPolicy Unrestricted -File c:\ExtendADLab1\scripts\ExportImport-AD.ps1 -RestoreOUs -RestoreUsers -RestoreGroups -RestoreMemberships -RestorePolicies -RestoreComputers -BackupFolder c:\ExtendADLab1\scripts\ -SettingsFile c:\ExtendADLab1\scripts\settingfile.xml
+powershell -ExecutionPolicy Unrestricted -File c:\ExtendADLab1\scripts\ExportImport-AD.ps1 -RestoreOUs -RestoreUsers -RestoreGroups -RestoreMemberships -RestorePolicies -RestoreComputers -BackupFolder c:\ExtendADLab1\scripts\ -SettingsFile c:\ExtendADLab1\scripts\settingfile.xml
 # powershell -ExecutionPolicy Unrestricted -File c:\ExtendAD\scripts\extendaddslab1.ps1 -aduser $user -adpassword $password -ou $ou -upn $upn
 
 Stop-Transcript
