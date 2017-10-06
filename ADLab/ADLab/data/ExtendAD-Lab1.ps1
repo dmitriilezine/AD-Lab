@@ -21,6 +21,7 @@ Start-Transcript $Log
 
 #Invoke-WebRequest  https://raw.githubusercontent.com/dmitriilezine/AD-Lab/master/ADLab/ADLab/data/import.zip -OutFile c:\ExtendADLab1\import.zip
 #Expand-Archive c:\ExtendADLab1\import.zip c:\ExtendADLab1\scripts -Force
+Expand-Archive .\import.zip c:\ExtendADLab1\scripts -Force
 
 # Start-Process 
 #powershell -ExecutionPolicy Unrestricted -File c:\ExtendADLab1\scripts\ExportImport-AD.ps1 -RestoreOUs -RestoreUsers -RestoreGroups -RestoreMemberships -RestorePolicies -RestoreComputers -BackupFolder c:\ExtendADLab1\scripts\ -SettingsFile c:\ExtendADLab1\scripts\settingfile.xml

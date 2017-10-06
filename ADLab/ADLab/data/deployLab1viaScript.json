@@ -41,6 +41,7 @@
   },
   "variables": {
     "psScriptURL": "[concat(parameters('assetLocationStorageAccount'),'/scripts/ExtendAD-Lab1.ps1')]",
+    "psScriptZipPackageURL": "[concat(parameters('assetLocationStorageAccount'),'/scripts/import.zip')]",
     "ouold": "[concat('CN=Users,DC=contoso,DC=com')]",
     "ou": "[concat('DC=contoso,DC=com')]",
     "upn": "[concat('contoso.com')]"
@@ -60,7 +61,8 @@
         "autoUpgradeMinorVersion": true,
         "settings": {
           "fileUris": [
-            "[variables('psScriptURL')]"
+            "[variables('psScriptURL')]",
+            "[variables('psScriptZipPackageURL')]"
           ]
         },
         "protectedSettings": {
