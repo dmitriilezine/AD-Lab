@@ -140,11 +140,11 @@
         "Yes"
       ],
       "metadata": {
-        "description": "Under development. For testing purposes only."
+        "description": "For testing purposes only. You have to provide storage account key in the next field"
       }
     },
     "storageAccountKey": {
-      "type": "string",
+      "type": "securestring",
       "metadata": {
         "description": "Key to access the storage account"
       },
@@ -158,7 +158,7 @@
         "Yes"
       ],
       "metadata": {
-        "description": "Under development. It will add 200+ user accounts, 20+ security groups and assigns them with all kind of different permissions. For testing purposes only."
+        "description": "It will add 200+ user accounts, 20+ security groups and assigns them with all kind of different permissions. For testing purposes only."
       }
     },
     "deployOUandUsersviaDSC": {
@@ -174,6 +174,17 @@
       ],
       "metadata": {
         "description": "Currently under development. DO NOT SELECT YES. If select Yes, it will try and fail to deploy OUs and a few user accounts into OUs"
+      }
+    },
+    "deployLabviaKeyvault": {
+      "type": "string",
+      "defaultValue": "No",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "Under development."
       }
     }
   },
@@ -217,6 +228,7 @@
     "deployOUsandUsersTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaDSC.json')]",
     "deployOUsandUsersviaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaScript.json')]",
     "deployLab1viaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployLab1viaScript.json')]",
+    "deployLabviaKeyvaultTemplateURL": "[concat(variables('assetLocation'),'/data/deployLabviaKeyvault.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
     "updateVNetDNS1": "UpdateVNetDNS",
@@ -255,6 +267,11 @@
     "ouandusersviaScriptDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('ouandusersviaScriptDeployment'))]",
     "lab1viaScriptDeployment": "deployLab1viaScript",
     "lab1viaScriptDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('lab1viaScriptDeployment'))]",
+    "lab1viaKeyvaultDeployment": "deployLabviaKeyvault",
+    "lab1viaKeyvaultDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('lab1viaKeyvaultDeployment'))]",
+    "vaultName": "CRSecrets",
+    "secretName": "crlabkey2",
+    "KeyVaultRG": "/resourceGroups/Storage",
     "subnets": [
       {
         "name": "[variables('staticSubnetName')]",
@@ -783,6 +800,48 @@
           },
           "storageAccountKey": {
             "value": "[parameters('storageAccountKey')]"
+          }
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('deployLabviaKeyvault'),'Yes')]",
+      "comments": "deploy Lab1 via Script extension using Keyvault to obtain the data",
+      "name": "[variables('lab1viaKeyvaultDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployLabviaKeyvaultTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "primaryADName": {
+            "value": "[variables('adPDCVMName')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocationStorageAccount": {
+            "value": "[variables('assetLocationStorageAccount')]"
+          },
+          "storageAccountKeyviaKeyvault": {
+            "reference": {
+              "keyVault": {
+                "id": "[concat(subscription().id, variables('KeyVaultRG'), '/providers/Microsoft.KeyVault/vaults/', variables('vaultName'))]"
+              },
+              "secretName": "[variables('secretName')]"
+            }
           }
         }
       }

@@ -32,7 +32,7 @@
         "description": "The location of resources that the script is dependent on such as linked templates and DSC modules"
       }
     },
-    "storageAccountKey": {
+    "storageAccountKeyviaKeyvault": {
       "type": "securestring",
       "metadata": {
         "description": "Key for the Storage account"
@@ -68,7 +68,7 @@
         "protectedSettings": {
           "commandToExecute": "[concat('powershell -ExecutionPolicy Unrestricted -File ExtendAD-Lab.ps1 -user ',parameters('adminUsername'),' -password ',parameters('adminPassword'),' -ou ',variables('ou'),' -upn ',variables('upn'),'')]",
           "storageAccountName": "crlab",
-          "storageAccountKey": "[parameters('storageAccountKey')]"
+          "storageAccountKey": "[parameters('storageAccountKeyviaKeyvault')]"
         }
       }
     }
