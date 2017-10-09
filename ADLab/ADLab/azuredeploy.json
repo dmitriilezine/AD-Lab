@@ -140,7 +140,7 @@
         "Yes"
       ],
       "metadata": {
-        "description": "For testing purposes only. You have to provide storage account key in the next field"
+        "description": "For testing purposes only. You have to provide storage account key in the next field."
       }
     },
     "storageAccountKey": {
@@ -184,7 +184,7 @@
         "Yes"
       ],
       "metadata": {
-        "description": "Under development."
+        "description": "Unless you have access to the Key Vault, which you do not, don't select this option. It will fail."
       }
     }
   },

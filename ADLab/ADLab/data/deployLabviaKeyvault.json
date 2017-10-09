@@ -49,7 +49,7 @@
   },
   "resources": [
     {
-      "name": "[concat(parameters('primaryADName'),'/deployLab1viaScript')]",
+      "name": "[concat(parameters('primaryADName'),'/deployLabviaKeyvault')]",
       "comments": "deploy OUs and User accounts via Script extension",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[resourceGroup().location]",
