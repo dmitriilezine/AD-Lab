@@ -197,9 +197,7 @@
           "Options": "[variables('domainJoinOptions')]"
         },
         "protectedSettings": {
-          "items": {
-            "Password": "[parameters('adminPassword')]"
-          }
+          "Password": "[parameters('adminPassword')]"
         }
       }
     }
