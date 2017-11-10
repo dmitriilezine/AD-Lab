@@ -562,6 +562,9 @@
           },
           "primaryIpAddress": {
             "value": "[variables('primaryDC2IpAddress')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
           }
         }
       }
