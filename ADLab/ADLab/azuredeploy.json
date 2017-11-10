@@ -557,6 +557,9 @@
           "NicName": {
             "value": "[variables('dc2NICName')]"
           },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
+          },
           "primaryIpAddress": {
             "value": "[variables('primaryDC2IpAddress')]"
           }
