@@ -189,8 +189,8 @@
             "autoUpgradeMinorVersion": "true",
             "settings": {
               "Name": "[parameters('domainName')]",
-              "OUPath": "[variables('ouPath')]",
-              "User": "[variables('joinUser')]",
+              "OUPath": "",
+              "User": "[concat(variables('shortDomainName'), '\\', parameters('adminUsername'))]",
               "Restart": "true",
               "Options": "[variables('domainJoinOptions')]"
             },
