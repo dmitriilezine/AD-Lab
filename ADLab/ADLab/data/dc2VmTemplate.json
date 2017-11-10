@@ -103,6 +103,7 @@
     "shortDomainName": "[split(parameters('domainName'),'.')[0]]",
     "ouPath": "",
     "joinUser": "[concat(variables('shortDomainName'), '\\', parameters('adminUsername'))]",
+    "joinUserDN": "[concat(parameters('domainName'), '\\', parameters('adminUsername'))]",
     "joinuserUPN": "[concat(parameters('adminUsername'),'@',parameters('domainName'))]",
     "vmvhdContainerName": "vhds"
   },
@@ -191,7 +192,7 @@
         "settings": {
           "Name": "[parameters('domainName')]",
           "OUPath": "",
-          "User": "[variables('joinuserUPN')]",
+          "User": "[variables('joinUserDN')]",
           "Restart": "true",
           "Options": "[variables('domainJoinOptions')]"
         },
