@@ -190,7 +190,7 @@
             "settings": {
               "Name": "[parameters('domainName')]",
               "OUPath": "",
-              "User": "[concat(variables('shortDomainName'), '\\', parameters('adminUsername'))]",
+              "User": "[concat(parameters('DomainName'), '\\', parameters('adminUsername'))]",
               "Restart": "true",
               "Options": "[variables('domainJoinOptions')]"
             },
