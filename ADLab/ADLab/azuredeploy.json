@@ -44,9 +44,31 @@
       },
       "defaultValue": "2016-Datacenter"
     },
+    "deployDC2": {
+      "type": "string",
+      "defaultValue": "No",
+      "allowedValues": [
+        "No",
+        "Yes"
+      ],
+      "metadata": {
+        "description": "Deploy second DC in ADDS"
+      }
+    },
+    "DC2VMImageSKU": {
+      "type": "string",
+      "allowedValues": [
+        "2012-R2-Datacenter",
+        "2016-Datacenter"
+      ],
+      "metadata": {
+        "description": "Choose OS type for DC2 Server"
+      },
+      "defaultValue": "2016-Datacenter"
+    },
     "deployC2": {
       "type": "string",
-      "defaultValue": "Yes",
+      "defaultValue": "No",
       "allowedValues": [
         "No",
         "Yes"
@@ -68,7 +90,7 @@
     },
     "deployATA": {
       "type": "string",
-      "defaultValue": "Yes",
+      "defaultValue": "No",
       "allowedValues": [
         "No",
         "Yes"
@@ -90,7 +112,7 @@
     },
     "deployVM1": {
       "type": "string",
-      "defaultValue": "Yes",
+      "defaultValue": "No",
       "allowedValues": [
         "No",
         "Yes"
@@ -112,7 +134,7 @@
     },
     "deployVM2": {
       "type": "string",
-      "defaultValue": "Yes",
+      "defaultValue": "No",
       "allowedValues": [
         "No",
         "Yes"
@@ -176,7 +198,7 @@
         "description": "Currently under development. DO NOT SELECT YES. If select Yes, it will try and fail to deploy OUs and a few user accounts into OUs"
       }
     },
-    "deployLabviaKeyvault": {
+    "deployLabViaKeyVault": {
       "type": "string",
       "defaultValue": "No",
       "allowedValues": [
@@ -193,6 +215,7 @@
     "assetLocationStorageAccount": "https://crlab.blob.core.windows.net",
     "adVMSize": "Standard_A2",
     "adOSVersion": "[parameters('DomainControllerImageSKU')]",
+    "dc2OSVersion": "[parameters('DC2VMImageSKU')]",
     "ataOSVersion": "[parameters('ATAVMImageSKU')]",
     "c2OSVersion": "[parameters('C2VMImageSKU')]",
     "vm1OSVersion": "[parameters('VM1VMImageSKU')]",
@@ -200,12 +223,14 @@
     "vmNetworkSubnet": "10.0.0.0/24",
     "virtualNetworkAddressRange": "10.0.0.0/16",
     "primaryAdIpAddress": "10.0.0.4",
-    "primaryATAIpAddress": "10.0.0.5",
-    "primaryC2IpAddress": "10.0.0.6",
-    "primaryVM1IpAddress": "10.0.0.7",
-    "primaryVM2IpAddress": "10.0.0.8",
+    "primaryDC2IpAddress": "10.0.0.5",
+    "primaryATAIpAddress": "10.0.0.6",
+    "primaryC2IpAddress": "10.0.0.7",
+    "primaryVM1IpAddress": "10.0.0.8",
+    "primaryVM2IpAddress": "10.0.0.9",
     "storageAccountType": "Standard_LRS",
     "adTemplateURLCloud": "[concat(variables('assetLocation'),'/data/adVmTemplate.json')]",
+    "dc2TemplateURL": "[concat(variables('assetLocation'),'/data/dc2VmTemplate.json')]",
     "ataTemplateURL": "[concat(variables('assetLocation'),'/data/ataVmTemplate.json')]",
     "c2TemplateURL": "[concat(variables('assetLocation'),'/data/c2VmTemplate.json')]",
     "vm1TemplateURL": "[concat(variables('assetLocation'),'/data/vm1VmTemplate.json')]",
@@ -220,17 +245,23 @@
     "adVmDeployment": "CreateADVMs",
     "adVmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('adVmDeployment'))]",
     "adPDCVMName": "[substring(concat('DC1',resourceGroup().Name),0,5)]",
+    "dc2VmDeployment": "CreateDC2VMs",
+    "dc2VmDeploymentId": "[concat('Microsoft.Resources/deployments/', variables('dc2VmDeployment'))]",
+    "dc2BDCVMName": "[substring(concat('DC2',resourceGroup().Name),0,5)]",
     "ataVMName": "[substring(concat('ATA',resourceGroup().Name),0,5)]",
     "c2VMName": "[substring(concat('C2',resourceGroup().Name),0,5)]",
     "vm1VMName": "[substring(concat('VM1',resourceGroup().Name),0,5)]",
     "vm2VMName": "[substring(concat('VM2',resourceGroup().Name),0,5)]",
     "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
+    "deployDC2AdTemplateURL": "[concat(variables('assetLocation'),'/data/deployDC2AD.json')]",
     "deployOUsandUsersTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaDSC.json')]",
     "deployOUsandUsersviaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaScript.json')]",
     "deployLab1viaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployLab1viaScript.json')]",
     "deployLabviaKeyvaultTemplateURL": "[concat(variables('assetLocation'),'/data/deployLabviaKeyvault.json')]",
     "deployPrimaryAd": "ConfigureAD",
     "deployPrimaryAdId": "[concat('Microsoft.Resources/deployments/', variables('deployPrimaryAd'))]",
+    "deployDC2Ad": "ConfigureADDC2",
+    "deployDC2AdId": "[concat('Microsoft.Resources/deployments/', variables('deployDC2Ad'))]",
     "updateVNetDNS1": "UpdateVNetDNS",
     "vnetwithDNSTemplateURL": "[concat(variables('assetLocation'),'/data/vnet-with-dns-server.json')]",
     "publicLBName": "[concat('ADPLB',resourceGroup().name)]",
@@ -245,6 +276,7 @@
     "nsgName": "[concat('ADNsg',resourceGroup().name)]",
     "nsgID": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('nsgName'))]",
     "adNICName": "[concat('ADNic',resourceGroup().name)]",
+    "dc2NICName": "[concat('DC2Nic',resourceGroup().name)]",
     "ataNICName": "[concat('ATANic',resourceGroup().name)]",
     "c2NICName": "[concat('C2Nic',resourceGroup().name)]",
     "vm1NICName": "[concat('VM1Nic',resourceGroup().name)]",
@@ -485,6 +517,48 @@
           },
           "dnsServerAddress": {
             "value": [ "[variables('primaryAdIpAddress')]" ]
+          }
+        }
+      }
+    },
+    {
+      "condition": "[equals(parameters('deployDC2'),'Yes')]",
+      "name": "[variables('dc2VmDeployment')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('updateVNetDNS1')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('dc2TemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "subnetResourceID": {
+            "value": "[variables('staticSubnetID')]"
+          },
+          "windowsImageSKU": {
+            "value": "[variables('dc2OSVersion')]"
+          },
+          "vmName": {
+            "value": "[variables('dc2BDCVMName')]"
+          },
+          "vmSize": {
+            "value": "[variables('adVMSize')]"
+          },
+          "NicName": {
+            "value": "[variables('dc2NICName')]"
+          },
+          "primaryIpAddress": {
+            "value": "[variables('primaryDC2IpAddress')]"
           }
         }
       }
