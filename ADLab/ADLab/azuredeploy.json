@@ -253,7 +253,7 @@
     "vm1VMName": "[substring(concat('VM1',resourceGroup().Name),0,5)]",
     "vm2VMName": "[substring(concat('VM2',resourceGroup().Name),0,5)]",
     "deployPrimaryAdTemplateURL": "[concat(variables('assetLocation'),'/data/deployPrimaryAD.json')]",
-    "deployDC2AdTemplateURL": "[concat(variables('assetLocation'),'/data/deployDC2AD.json')]",
+    "deployDC2AdTemplateURL": "[concat(variables('assetLocation'),'/data/deploySecondDC.json')]",
     "deployOUsandUsersTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaDSC.json')]",
     "deployOUsandUsersviaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployOUsandUsersviaScript.json')]",
     "deployLab1viaScriptTemplateURL": "[concat(variables('assetLocation'),'/data/deployLab1viaScript.json')]",
@@ -474,7 +474,7 @@
           "contentVersion": "1.0.0.0"
         },
         "parameters": {
-          "primaryADName": {
+          "dc1VMName": {
             "value": "[variables('adPDCVMName')]"
           },
           "domainName": {
@@ -565,6 +565,38 @@
           },
           "domainName": {
             "value": "[parameters('domainName')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('deployDC2AD')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('dc2VmDeploymentId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('deployDC2AdTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "dc2VMName": {
+            "value": "[variables('dc2BDCVMName')]"
+          },
+          "domainName": {
+            "value": "[parameters('domainName')]"
+          },
+          "adminUsername": {
+            "value": "[parameters('adminUsername')]"
+          },
+          "adminPassword": {
+            "value": "[parameters('adminPassword')]"
+          },
+          "assetLocation": {
+            "value": "[variables('assetLocation')]"
           }
         }
       }
