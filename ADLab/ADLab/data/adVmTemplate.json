@@ -101,16 +101,7 @@
     "vmvhdContainerName": "vhds"
   },
   "resources": [
-    {
-      "name": "[parameters('storageAccount')]",
-      "type": "Microsoft.Storage/storageAccounts",
-      "location": "[resourceGroup().location]",
-      "apiVersion": "2015-06-15",
-      "properties": {
-        "accountType": "[parameters('storageAccountType')]"
-      }
-    },
-    {
+   {
       "name": "[parameters('adDNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[resourceGroup().location]",
