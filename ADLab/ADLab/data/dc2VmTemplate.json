@@ -140,8 +140,7 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2017-03-30",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces',parameters('NicName'))]",
-        "[resourceId('Microsoft.Compute/availabilitySets',parameters('adAvailabilitySetName'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces',parameters('NicName'))]"
       ],
       "properties": {
         "hardwareProfile": {

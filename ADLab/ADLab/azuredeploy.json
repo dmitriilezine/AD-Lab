@@ -430,7 +430,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[variables('publiclbID')]"
+        "[variables('publiclbID')]",
+        "[resourceId('Microsoft.Compute/availabilitySets',variables('adAvailabilitySetName'))]"
       ],
       "properties": {
         "mode": "Incremental",
@@ -539,7 +540,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[variables('updateVNetDNS1')]"
+        "[variables('updateVNetDNS1')]",
+        "[resourceId('Microsoft.Compute/availabilitySets',variables('adAvailabilitySetName'))]"
       ],
       "properties": {
         "mode": "Incremental",
