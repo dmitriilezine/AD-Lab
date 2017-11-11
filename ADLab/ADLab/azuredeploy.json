@@ -263,6 +263,7 @@
     "deployDC2Ad": "ConfigureADDC2",
     "deployDC2AdId": "[concat('Microsoft.Resources/deployments/', variables('deployDC2Ad'))]",
     "updateVNetDNS1": "UpdateVNetDNS",
+    "updateVNetDNS2": "UpdateVNetDNS2",
     "vnetwithDNSTemplateURL": "[concat(variables('assetLocation'),'/data/vnet-with-dns-server.json')]",
     "publicLBName": "[concat('ADPLB',resourceGroup().name)]",
     "publicIPAddressName": "[concat('ADlbPublicIP',resourceGroup().name)]",
@@ -597,6 +598,39 @@
           },
           "assetLocation": {
             "value": "[variables('assetLocation')]"
+          }
+        }
+      }
+    },
+    {
+      "name": "[variables('updateVNetDNS2')]",
+      "type": "Microsoft.Resources/deployments",
+      "apiVersion": "2015-01-01",
+      "dependsOn": [
+        "[variables('deployPrimaryAdId')]",
+        "[variables('deployDC2AdId')]"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[variables('vnetwithDNSTemplateURL')]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "virtualNetworkName": {
+            "value": "[variables('virtualNetworkName')]"
+          },
+          "virtualNetworkAddressRange": {
+            "value": "[variables('virtualNetworkAddressRange')]"
+          },
+          "subnets": {
+            "value": "[variables('subnets')]"
+          },
+          "dnsServerAddress": {
+            "value": [
+              "[variables('primaryAdIpAddress')]",
+              "[variables('primaryDC2IpAddress')]"
+            ]
           }
         }
       }
