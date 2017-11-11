@@ -305,6 +305,7 @@
     "vaultName": "CRSecrets",
     "secretName": "crlabkey2",
     "KeyVaultRG": "/resourceGroups/Storage",
+    "adAvailabilitySetName": "adAvailabiltySet",
     "subnets": [
       {
         "name": "[variables('staticSubnetName')]",
@@ -412,6 +413,19 @@
       }
     },
     {
+      "name": "[variables('adAvailabilitySetName')]",
+      "type": "Microsoft.Compute/availabilitySets",
+      "apiVersion": "2017-03-30",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "PlatformUpdateDomainCount": 3,
+        "PlatformFaultDomainCount": 2
+      },
+      "sku": {
+        "name": "Aligned"
+      }
+    },
+    {
       "name": "[variables('adVmDeployment')]",
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
@@ -434,14 +448,8 @@
           "adRDPNATRuleID": {
             "value": "[variables('adRDPNATRuleID')]"
           },
-          "storageAccount": {
-            "value": "[variables('adStorageName')]"
-          },
           "subnetResourceID": {
             "value": "[variables('staticSubnetID')]"
-          },
-          "storageAccountType": {
-            "value": "[variables('storageAccountType')]"
           },
           "windowsImageSKU": {
             "value": "[variables('adOSVersion')]"
@@ -457,6 +465,9 @@
           },
           "primaryAdIpAddress": {
             "value": "[variables('primaryAdIpAddress')]"
+          },
+          "adAvailabilitySetName": {
+            "value": "[variables('adAvailabilitySetName')]"
           }
         }
       }
@@ -566,6 +577,9 @@
           },
           "domainName": {
             "value": "[parameters('domainName')]"
+          },
+          "adAvailabilitySetName": {
+            "value": "[variables('adAvailabilitySetName')]"
           }
         }
       }

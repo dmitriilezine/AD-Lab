@@ -47,19 +47,6 @@
         "description": "The VM Name"
       }
     },
-    "storageAccount": {
-      "type": "string",
-      "metadata": {
-        "description": "The Storage Account Name"
-      }
-    },
-    "storageAccountType": {
-      "type": "string",
-      "metadata": {
-        "description": "The type of the Storage Account created"
-      },
-      "defaultValue": "Standard_LRS"
-    },
     "adminUsername": {
       "type": "string",
       "metadata": {
@@ -101,6 +88,12 @@
       "type": "string",
       "metadata": {
         "description": "PrimaryIPAddress if AD VM"
+      }
+    },
+    "adAvailabilitySetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Availability set for AD VMs"
       }
     }
   },
@@ -146,14 +139,17 @@
       "name": "[parameters('vmName')]",
       "type": "Microsoft.Compute/virtualMachines",
       "location": "[resourceGroup().location]",
-      "apiVersion": "2015-06-15",
+      "apiVersion": "2017-03-30",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts',parameters('storageAccount'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces',parameters('adDNicName'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces',parameters('adDNicName'))]",
+        "[resourceId('Microsoft.Compute/availabilitySets',parameters('adAvailabilitySetName'))]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]"
         },
         "osProfile": {
           "computerName": "[parameters('vmName')]",
@@ -168,18 +164,12 @@
             "version": "[parameters('windowsImageVersion')]"
           },
           "osDisk": {
-            "name": "osdisk",
-            "vhd": {
-              "uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccount')),providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).primaryEndpoints.blob ,variables('vmvhdContainerName'),'/', parameters('vmName'), '0','-osdisk.vhd')]"
-            },
+            "name": "[concat(parameters('vmName'), '0','-osdisk')]",
             "caching": "ReadWrite",
             "createOption": "FromImage"
           },
           "dataDisks": [
             {
-              "vhd": {
-                "uri": "[concat(reference(concat('Microsoft.Storage/storageAccounts/', parameters('storageAccount')),providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).primaryEndpoints.blob ,variables('vmvhdContainerName'),'/', parameters('vmName'), '0','data-1.vhd')]"
-              },
               "name": "[concat(parameters('vmName'), '0','-data-disk1')]",
               "createOption": "Empty",
               "caching": "None",

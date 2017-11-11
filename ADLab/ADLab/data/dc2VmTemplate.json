@@ -95,6 +95,12 @@
         "description": "The Version of Windows Image"
       },
       "defaultValue": "latest"
+    },
+    "adAvailabilitySetName": {
+      "type": "string",
+      "metadata": {
+        "description": "Availability set for AD VMs"
+      }
     }
   },
   "variables": {
@@ -134,11 +140,15 @@
       "location": "[resourceGroup().location]",
       "apiVersion": "2017-03-30",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/networkInterfaces',parameters('NicName'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces',parameters('NicName'))]",
+        "[resourceId('Microsoft.Compute/availabilitySets',parameters('adAvailabilitySetName'))]"
       ],
       "properties": {
         "hardwareProfile": {
           "vmSize": "[parameters('vmSize')]"
+        },
+        "availabilitySet": {
+          "id": "[resourceId('Microsoft.Compute/availabilitySets', parameters('adAvailabilitySetName'))]"
         },
         "osProfile": {
           "computerName": "[parameters('vmName')]",
