@@ -973,7 +973,8 @@
       "type": "Microsoft.Resources/deployments",
       "apiVersion": "2015-01-01",
       "dependsOn": [
-        "[variables('deployPrimaryAdId')]"
+        "[variables('deployPrimaryAdId')]",
+        "[variables('deployDC2AdId')]"
       ],
       "properties": {
         "mode": "Incremental",

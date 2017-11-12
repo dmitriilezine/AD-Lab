@@ -101,7 +101,7 @@
     "vmvhdContainerName": "vhds"
   },
   "resources": [
-   {
+    {
       "name": "[parameters('adDNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[resourceGroup().location]",
@@ -175,6 +175,28 @@
             }
           ]
         }
+      }
+    },
+    {
+      "name": "[concat('shutdown-computevm-',parameters('vmName'))]",
+      "type": "Microsoft.DevTestLab/schedules",
+      "apiVersion": "2016-05-15",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines',parameters('vmName'))]"
+      ],
+      "properties": {
+        "status": "Enabled",
+        "taskType": "ComputeVmShutdownTask",
+        "dailyRecurrence": {
+          "time": "2300"
+        },
+        "timeZoneId": "Mountain Standard Time",
+        "notificationSettings": {
+          "status": "Disabled",
+          "timeInMinutes": 15
+        },
+        "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
       }
     }
   ],
