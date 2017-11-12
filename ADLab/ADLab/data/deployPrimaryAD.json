@@ -34,8 +34,8 @@
     }
   },
   "variables": {
-    "adPDCModulesURL": "[concat(parameters('assetLocation'),'/data/CreateADPDC.zip')]",
-    "adPDCConfigurationFunction": "CreateADPDC.ps1\\CreateADPDC"
+    "adPDCModulesURL": "[concat(parameters('assetLocation'),'/data/DeployADDS2.zip')]",
+    "adPDCConfigurationFunction": "DeployADDS.ps1\\CreateADPDC"
   },
   "resources": [
     {
@@ -62,8 +62,7 @@
         "protectedSettings": {
           "items": {
             "adminPassword": "[parameters('adminPassword')]"
-          },
-          "DataBlobUri": "[concat(parameters('assetLocation'),'/data/AD-Data.psd1')]"
+          }
         }
       }
     }

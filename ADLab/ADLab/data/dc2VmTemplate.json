@@ -186,6 +186,28 @@
       }
     },
     {
+      "name": "[concat(parameters('vmName'),'/autoshutdown')]",
+      "type": "Microsoft.DevTestLab/labs/schedules",
+      "apiVersion": "2016-05-15",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Compute/virtualMachines',parameters('vmName'))]"
+      ],
+      "properties": {
+        "status": "Enabled",
+        "taskType": "ComputeVmShutdownTask",
+        "dailyRecurrence": {
+          "time": "2300"
+        },
+        "timeZoneId": "Mountain Standard Time",
+        "notificationSettings": {
+          "status": "Disabled",
+          "timeInMinutes": 15
+        },
+        "targetResourceId": "[resourceId('Microsoft.Compute/virtualMachines', parameters('vmName'))]"
+      }
+    },
+    {
       "name": "[concat(parameters('vmName'),'/joindomain')]",
       "type": "Microsoft.Compute/virtualMachines/extensions",
       "location": "[resourceGroup().location]",
