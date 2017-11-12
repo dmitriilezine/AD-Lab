@@ -186,8 +186,8 @@
       }
     },
     {
-      "name": "[concat(parameters('vmName'),'/autoshutdown')]",
-      "type": "Microsoft.DevTestLab/labs/schedules",
+      "name": "[concat(parameters('vmName'),'-scheduled-autoshutdown')]",
+      "type": "microsoft.devtestlab/schedules",
       "apiVersion": "2016-05-15",
       "location": "[resourceGroup().location]",
       "dependsOn": [
