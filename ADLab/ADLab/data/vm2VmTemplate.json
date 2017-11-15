@@ -20,7 +20,8 @@
       "type": "string",
       "allowedValues": [
         "2012-R2-Datacenter",
-        "2016-Datacenter"
+        "2016-Datacenter",
+        "2008-R2-SP1"
       ],
       "metadata": {
         "description": "The SKU Name of Windows Image"
